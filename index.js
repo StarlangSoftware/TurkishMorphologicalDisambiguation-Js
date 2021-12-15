@@ -1,0 +1,7 @@
+export * from "./dist/AutoDisambiguator"
+export * from "./dist/DummyDisambiguation"
+export * from "./dist/HmmDisambiguation"
+export * from "./dist/LongestRootFirstDisambiguation"
+export * from "./dist/MorphologicalDisambiguator"
+export * from "./dist/NaiveDisambiguation"
+export * from "./dist/RootFirstDisambiguation"
