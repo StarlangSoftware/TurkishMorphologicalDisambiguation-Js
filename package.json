@@ -1,6 +1,6 @@
 {
   "name": "nlptoolkit-morphologicaldisambiguation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turkish Morphological Disambiguation Library",
   "main": "index.js",
   "types": "index.js",
@@ -20,12 +20,14 @@
   "devDependencies": {
     "@types/mocha": "^9.0.0",
     "mocha": "^9.1.3",
-    "nlptoolkit-corpus": "^1.0.2",
-    "nlptoolkit-datastructure": "^1.0.0",
-    "nlptoolkit-dictionary": "^1.0.2",
-    "nlptoolkit-morphologicalanalysis": "^1.0.1",
-    "nlptoolkit-ngram": "^1.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "nlptoolkit-corpus": "^1.0.9",
+    "nlptoolkit-datastructure": "^1.0.4",
+    "nlptoolkit-dictionary": "^1.0.9",
+    "nlptoolkit-morphologicalanalysis": "^1.0.9",
+    "nlptoolkit-ngram": "^1.0.2"
   }
 }
