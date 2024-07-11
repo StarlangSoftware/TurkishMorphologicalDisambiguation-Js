@@ -10,6 +10,14 @@ export abstract class AutoDisambiguator {
 
     protected morphologicalAnalyzer: FsmMorphologicalAnalyzer
 
+    /**
+     * Checks if there is any singular second person agreement or possessor tag before the current word at position
+     * index.
+     * @param index Position of the current word.
+     * @param correctParses All correct morphological parses of the previous words.
+     * @return True, if at least one of the morphological parses of the previous words has a singular second person
+     * agreement or possessor tag, false otherwise.
+     */
     private static isAnyWordSecondPerson(index: number, correctParses: Array<FsmParse>): boolean{
         let count = 0;
         for (let i = index - 1; i >= 0; i--) {
@@ -21,6 +29,13 @@ export abstract class AutoDisambiguator {
         return count >= 1;
     }
 
+    /**
+     * Checks if there is any plural agreement or possessor tag before the current word at position index.
+     * @param index Position of the current word.
+     * @param correctParses All correct morphological parses of the previous words.
+     * @return True, if at least one of the morphological parses of the previous words has a plural agreement or
+     * possessor tag, false otherwise.
+     */
     private static isPossessivePlural(index: number, correctParses: Array<FsmParse>): boolean{
         for (let i = index - 1; i >= 0; i--) {
             if (correctParses[i].isNoun()) {
@@ -30,6 +45,11 @@ export abstract class AutoDisambiguator {
         return false;
     }
 
+    /**
+     * Given all possible parses of the next word, this method returns the most frequent pos tag.
+     * @param nextParseList All possible parses of the next word.
+     * @return Most frequent pos tag in all possible parses of the next word.
+     */
     private static nextWordPos(nextParseList: FsmParseList): string{
         let map = new CounterHashMap<string>();
         for (let i = 0; i < nextParseList.size(); i++) {
@@ -38,32 +58,75 @@ export abstract class AutoDisambiguator {
         return map.max();
     }
 
+    /**
+     * Checks if the current word is just before the last word.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @return True, if the current word is just before the last word, false otherwise.
+     */
     private static isBeforeLastWord(index: number, fsmParses: Array<FsmParseList>): boolean{
         return index + 2 == fsmParses.length;
     }
 
+    /**
+     * Checks if there is at least one word after the current word.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @return True, if there is at least one word after the current word, false otherwise.
+     */
     private static nextWordExists(index: number, fsmParses: Array<FsmParseList>): boolean{
         return index + 1 < fsmParses.length;
     }
 
+    /**
+     * Checks if there is at least one word after the current word and that next word is a noun.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @return True, if there is at least one word after the current word and that next word is a noun, false otherwise.
+     */
     private static isNextWordNoun(index: number, fsmParses: Array<FsmParseList>): boolean{
         return index + 1 < fsmParses.length && AutoDisambiguator.nextWordPos(fsmParses[index + 1]) == "NOUN";
     }
 
+    /**
+     * Checks if there is at least one word after the current word and that next word is a number.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @return True, if there is at least one word after the current word and that next word is a number, false
+     * otherwise.
+     */
     private static isNextWordNum(index: number, fsmParses: Array<FsmParseList>): boolean{
         return index + 1 < fsmParses.length && AutoDisambiguator.nextWordPos(fsmParses[index + 1]) == "NUM";
     }
 
+    /**
+     * Checks if there is at least one word after the current word and that next word is a noun or adjective.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @return True, if there is at least one word after the current word and that next word is a noun or adjective,
+     * false otherwise.
+     */
     private static isNextWordNounOrAdjective(index: number, fsmParses: Array<FsmParseList>): boolean{
         return index + 1 < fsmParses.length && (AutoDisambiguator.nextWordPos(fsmParses[index + 1]) == "NOUN" ||
             AutoDisambiguator.nextWordPos(fsmParses[index + 1]) == "ADJ" ||
             AutoDisambiguator.nextWordPos(fsmParses[index + 1]) == "DET");
     }
 
+    /**
+     * Checks if the current word is the first word of the sentence or not.
+     * @param index Position of the current word.
+     * @return True, if the current word is the first word of the sentence, false otherwise.
+     */
     private static isFirstWord(index: number): boolean{
         return index == 0
     }
 
+    /**
+     * Checks if there are at least two occurrences of 'ne', 'ya' or 'gerek' in the sentence.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @param word 'ne', 'ya' or 'gerek'
+     * @return True, if there are at least two occurrences of 'ne', 'ya' or 'gerek' in the sentence, false otherwise.
+     */
     private static containsTwoNeOrYa(fsmParses: Array<FsmParseList>, word: string): boolean{
         let count = 0;
         for (let fsmPars of fsmParses) {
@@ -75,10 +138,29 @@ export abstract class AutoDisambiguator {
         return count == 2;
     }
 
+    /**
+     * Checks if there is at least one word before the given word and its pos tag is the given pos tag.
+     * @param index Position of the current word.
+     * @param correctParses All correct morphological parses of the previous words.
+     * @param tag Pos tag of the previous word
+     * @return True, if there is at least one word before the given word and its pos tag is the given pos tag, false
+     * otherwise.
+     */
     private static hasPreviousWordTag(index: number, correctParses: Array<FsmParse>, tag: MorphologicalTag): boolean{
         return index > 0 && correctParses[index - 1].containsTag(tag);
     }
 
+    /**
+     * Given the disambiguation parse string, position of the current word in the sentence, all morphological parses of
+     * all words in the sentence and all correct morphological parses of the previous words, the algorithm determines
+     * the correct morphological parse of the current word in rule based manner.
+     * @param parseString Disambiguation parse string. The string contains distinct subparses for the given word for a
+     *                    determined root word. The subparses are separated with '$'.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @param correctParses All correct morphological parses of the previous words.
+     * @return Correct morphological subparse of the current word.
+     */
     private static selectCaseForParseString(parseString: string, index: number, fsmParses: Array<FsmParseList>,
                                             correctParses: Array<FsmParse>): string{
         let surfaceForm = fsmParses[index].getFsmParse(0).getSurfaceForm();
@@ -887,6 +969,15 @@ export abstract class AutoDisambiguator {
         return undefined;
     }
 
+    /**
+     * Given the position of the current word in the sentence, all morphological parses of all words in the sentence and
+     * all correct morphological parses of the previous words, the algorithm determines the correct morphological parse
+     * of the current word in rule based manner.
+     * @param index Position of the current word.
+     * @param fsmParses All morphological parses of the current sentence.
+     * @param correctParses All correct morphological parses of the previous words.
+     * @return Correct morphological parse of the current word.
+     */
     static caseDisambiguator(index: number, fsmParses: Array<FsmParseList>, correctParses: Array<FsmParse>): FsmParse{
         let fsmParseList = fsmParses[index];
         let defaultCase = AutoDisambiguator.selectCaseForParseString(fsmParses[index].parsesWithoutPrefixAndSuffix(), index, fsmParses, correctParses);

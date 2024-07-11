@@ -14,6 +14,11 @@
     const fs = require("fs");
     const AutoDisambiguator_1 = require("./AutoDisambiguator");
     class LongestRootFirstDisambiguation extends MorphologicalDisambiguator_1.MorphologicalDisambiguator {
+        /**
+         * Constructor for the longest root first disambiguation algorithm. The method reads a list of (surface form, most
+         * frequent root word for that surface form) pairs from a given file.
+         * @param fileName File that contains list of (surface form, most frequent root word for that surface form) pairs.
+         */
         constructor(fileName) {
             super();
             this.rootList = new Map();
@@ -22,6 +27,10 @@
             }
             this.readFromFile(fileName);
         }
+        /**
+         * Reads the list of (surface form, most frequent root word for that surface form) pairs from a given file.
+         * @param fileName Input file name.
+         */
         readFromFile(fileName) {
             let data = fs.readFileSync(fileName, 'utf8');
             let lines = data.split("\n");
