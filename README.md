@@ -74,7 +74,7 @@ For Developers
 
 You can also see [Python](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-Py), 
 [Cython](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-Cy), 
-[C++](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-CPP), [C](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-C), [Java](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation), [Swift](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-Swift), 
+[C++](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-CPP), [C](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-C), [Java](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation), [Swift](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-Swift), [Php](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-Php),
 or [C#](https://github.com/starlangsoftware/TurkishMorphologicalDisambiguation-CS) repository.
 
 ## Requirements
